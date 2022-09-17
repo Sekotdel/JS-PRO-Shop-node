@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ru" class="elzTheme-dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link href="design/style.css" rel="stylesheet" type="text/css" />
+
+    <script> </script> <!-- Это нужно для того, чтобы анимация в хроме при загрузке страницы не проигрывалась. Нужно, чтобы оно стояло именно в хеаде. И всегда нужно, чтобы внутри скрипта был хотя бы один символ -->
+    <title>GB Store</title>
+</head>
+<body>
+<div id="app">
+
+
+    <div class="fixedPanel">
+        <div class="container flexible">
+            <div class="leftItems"></div>
+            <div class="rightItems">
+                <div class="elz item">
+
+                    <!--<form action="#" class="searchWrap" @submit.prevent="filter">
+                        <input type="text"  class="searchInput" placeholder="Поиск" v-model="userSearch">
+                        <button class="searchButton" type="submit">
+                        <img alt="" src="images/search.svg">
+                        </button>
+                    </form>-->
+                    <search></search>
+                </div>
+                
+                <div :class="cartItems.length ? '' : 'disable'" class="productsBasketWidgetCursor elz item">
+                    <div id="buyItems" class="itemWrap productsBasketWidget">
+                        <div class="productCatalogEvent elz basketBuyTpl" data-event="open">
+                            <div class="productCatalogList info">Позиций в корзине: <b class="bold">{{cartCount}}</b> на сумму <b class="bold">{{cartTotal}} ₽</b></div>
+    <!--<div class="buyButton">Купить</div>-->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="elz item">
+                    <div id="toggleCart" class="itemWrap interactive" @click="showCart = !showCart">
+                        <img class="cart" alt="" src="images/cart1.svg" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="uApiWrap productCatalogs">
+        <h1>Продукты</h1>
+        <div class="productCatalogList products">
+        <div class="productEventItem product-item" v-for="product of filtered" :key="product.id">
+            <div class="image-wrap">
+                <template v-for="image of product.images">
+                    <div class="wrapItem"></div>
+                    <img alt="" :src="`images/products/imageswrp/${image}`" />
+                </template>
+            </div>
+            <h3 class="product-name">{{product.title}}</h3>
+            <p class="product-price">{{product.price}} ₽</p>
+            <button class="productEvent buy-btn" @click="addProduct(product)">Купить</button>
+        </div>
+        </div>
+    </div>
+
+
+    <div class="productsBasketOverlay uniPopup" v-show="showCart">
+        <div class="productCatalogEvent popupCloserWrap popupCloser" @click="showCart = !showCart"></div>
+        <div class="popupWrap">
+            <div class="popupItself">
+                <div class="popupTitle">
+                    Корзина
+                    <div class="productCatalogEvent closerButton popupCloser" @click="showCart = !showCart"></div>
+                </div>
+                <div class="popupContent">
+                    <ul class="productCatalogList basketList">
+                        <li class="emptyCart" v-if="!cartItems.length">Cart is empty</li>
+                        <li class="productEventItem basketItem" v-for="item of cartItems" :key="item.id">
+                            <div class="imageWrap">
+                                <img :alt="item.title" :src="`images/products/icons/${item.icon}`">
+                            </div>
+                            <div class="itemInfo">
+                                <div class="item title">{{ item.title }}</div>
+                                <div class="item price">{{ item.price }} ₽</div>
+                            </div>
+                            <div class="itemControls">
+                                <div class="counter">
+                                    <div class="counterAmount" style="width: 100px;">{{ item.price * item.amount}} ₽</div>
+                                </div>
+                                <div class="counter">
+                                    <div class="productEvent controlButton minus" @click="decProduct(item)"></div>
+                                    <div class="counterAmount">{{item.amount}}</div>
+                                    <div class="productEvent controlButton plus" @click="item.amount++"></div>
+                                </div>
+                                <div class="productEvent controlButton delete" @click="removeProduct(item)"></div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<!--<script src="js/images.js"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script type="text/javascript" src="js/fetchData.js"></script>
+<script type="text/javascript" src="js/SearchComponent.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
+
+</body>
+</html>
